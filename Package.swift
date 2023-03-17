@@ -13,8 +13,6 @@ let package = Package(
         // hence it can't be imported by tests. Executable target can't be imported too.
         .executable(name: "sourcery", targets: ["SourceryExecutable"]),
         .library(name: "SourceryRuntime", targets: ["SourceryRuntime"]),
-        .library(name: "SourceryStencil", targets: ["SourceryStencil"]),
-        .library(name: "SourceryJS", targets: ["SourceryJS"]),
         .library(name: "SourcerySwift", targets: ["SourcerySwift"]),
         .library(name: "SourceryFramework", targets: ["SourceryFramework"]),
         .plugin(name: "SourceryCommandPlugin", targets: ["SourceryCommandPlugin"])
@@ -24,9 +22,8 @@ let package = Package(
         .package(url: "https://github.com/kylef/Commander.git", exact: "0.9.1"),
         // PathKit needs to be exact to avoid a SwiftPM bug where dependency resolution takes a very long time.
         .package(url: "https://github.com/kylef/PathKit.git", exact: "1.0.1"),
-        .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", exact: "2.10.1"),
         .package(url: "https://github.com/tuist/XcodeProj.git", exact: "8.3.1"),
-        .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", branch: "0.50800.0-SNAPSHOT-2022-12-29-a"),
+        .package(url: "https://github.com/apple/swift-syntax.git", branch: "0.50800.0-SNAPSHOT-2022-12-29-a"),
         .package(url: "https://github.com/Quick/Quick.git", from: "3.0.0"),
         .package(url: "https://github.com/Quick/Nimble.git", from: "9.0.0")
     ],
@@ -45,14 +42,11 @@ let package = Package(
             dependencies: [
                 "SourceryFramework",
                 "SourceryRuntime",
-                "SourceryStencil",
-                "SourceryJS",
                 "SourcerySwift",
                 "Commander",
                 "PathKit",
                 "Yams",
-                "StencilSwiftKit",
-                .product(name: "SwiftSyntax", package: "SwiftSyntax"),
+                .product(name: "SwiftSyntax", package: "swift-syntax"),
                 "XcodeProj",
                 "TryCatch"
             ],
@@ -82,39 +76,14 @@ let package = Package(
             name: "SourceryFramework",
             dependencies: [
               "PathKit",
-              .product(name: "SwiftSyntax", package: "SwiftSyntax"),
-              .product(name: "SwiftParser", package: "SwiftSyntax"),
+              .product(name: "SwiftSyntax", package: "swift-syntax"),
+              .product(name: "SwiftParser", package: "swift-syntax"),
               "SourceryUtils",
               "SourceryRuntime"
             ],
             path: "SourceryFramework",
             exclude: [
                 "Info.plist"
-            ]
-        ),
-        .target(
-            name: "SourceryStencil",
-            dependencies: [
-              "PathKit",
-              "SourceryRuntime",
-              "StencilSwiftKit",
-            ],
-            path: "SourceryStencil",
-            exclude: [
-                "Info.plist"
-            ]
-        ),
-        .target(
-            name: "SourceryJS",
-            dependencies: [
-                "PathKit"
-            ],
-            path: "SourceryJS",
-            exclude: [
-                "Info.plist"
-            ],
-            resources: [
-                .copy("Resources/ejs.js")
             ]
         ),
         .target(

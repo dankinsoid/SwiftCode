@@ -12,7 +12,6 @@ import PathKit
 import SourceryRuntime
 import SourceryFramework
 import SourceryUtils
-import SourceryJS
 import SourceryLib
 
 extension Path: ArgumentConvertible {
@@ -128,11 +127,6 @@ func runCLI() {
             }
             Log.logBenchmarks = (verboseLogging || logBenchmark) && !quiet
             Log.logAST = (verboseLogging || logAST) && !quiet
-
-            // if ejsPath is not provided use default value or executable path
-            EJSTemplate.ejsPath = ejsPath.string.isEmpty
-                ? (EJSTemplate.ejsPath ?? Path(ProcessInfo.processInfo.arguments[0]).parent() + "ejs.js")
-                : ejsPath
 
             let configurations = configPaths.flatMap { configPath -> [Configuration] in
                 let yamlPath: Path = configPath.isDirectory ? configPath + ".sourcery.yml" : configPath

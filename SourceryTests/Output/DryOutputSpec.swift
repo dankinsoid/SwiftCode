@@ -9,7 +9,6 @@ import PathKit
 #endif
 @testable import SourceryFramework
 @testable import SourceryRuntime
-@testable import SourceryJS
 
 
 class DryOutputSpec: QuickSpec {
